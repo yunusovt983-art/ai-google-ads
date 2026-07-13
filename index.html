@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ads-ai — ничего не тратится без сигнала «можно»</title>
-<meta name="description" content="AI-оператор рекламных кампаний Google Ads на Rust: предлагает каждое изменение, применяет — только через явный человеческий сигнал.">
+<title>ads-ai — Google Ads и Meta Ads без слепых трат</title>
+<meta name="description" content="AI-команда для Google Ads (Meta Ads — в разработке): анализирует кампании, готовит каждое решение о бюджете — и не тратит ни рубля без вашего разрешения.">
 <style>
   :root {
     --bg: #0A0E15;
@@ -71,7 +71,7 @@
 
   /* ---------- Hero ---------- */
   .hero {
-    padding: 84px 0 60px;
+    padding: 84px 0 50px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 40px;
@@ -84,12 +84,12 @@
   }
   h1.title {
     font-family: var(--font-display); font-weight: 500;
-    font-size: clamp(38px, 5.4vw, 60px); line-height: 1.05; letter-spacing: -0.01em;
+    font-size: clamp(38px, 5.4vw, 58px); line-height: 1.06; letter-spacing: -0.01em;
     margin: 0 0 20px; text-wrap: balance;
   }
   h1.title em { font-style: normal; color: var(--amber); }
-  .hero-thesis { font-size: 17.5px; line-height: 1.6; color: var(--muted); max-width: 52ch; margin: 0 0 26px; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-thesis { font-size: 17.5px; line-height: 1.6; color: var(--muted); max-width: 52ch; margin: 0 0 22px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
   .btn {
     font-family: var(--font-mono); font-size: 13px; text-decoration: none; padding: 11px 18px; border-radius: 7px;
     display: inline-flex; align-items: center; gap: 8px;
@@ -98,6 +98,16 @@
   .btn-primary:hover { background: #FFC069; }
   .btn-ghost { border: 1px solid var(--line); color: var(--text); }
   .btn-ghost:hover { border-color: var(--muted); }
+
+  .platform-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .platform-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--text);
+    border: 1px solid var(--line); background: var(--panel); padding: 6px 12px 6px 10px; border-radius: 999px;
+  }
+  .platform-pill .dot2 { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .platform-pill .dot2.live { background: var(--teal); box-shadow: 0 0 7px 1px rgba(70,199,190,0.55); }
+  .platform-pill .dot2.dev { background: var(--amber); box-shadow: 0 0 7px 1px rgba(240,169,62,0.55); }
 
   /* ---------- Boom-gate hero glyph ---------- */
   .gate-scene { display: flex; justify-content: center; }
@@ -115,12 +125,38 @@
   }
 
   /* ---------- Section shell ---------- */
-  section { padding: 58px 0; border-top: 1px solid var(--line-soft); }
+  section { padding: 56px 0; border-top: 1px solid var(--line-soft); }
   .section-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
   .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-dim); }
   h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 3vw, 30px); margin: 0; text-wrap: balance; }
+  h2.tight { font-size: clamp(20px, 2.4vw, 24px); }
   .section-note { font-size: 14.5px; color: var(--muted); max-width: 68ch; line-height: 1.55; margin: 0; }
   .section-note code, p code, li code { font-family: var(--font-mono); font-size: 0.92em; background: var(--panel-2); padding: 1px 5px; border-radius: 4px; color: var(--text); }
+
+  /* ---------- Platform cards ---------- */
+  .platform-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  @media (min-width: 760px) { .platform-grid { grid-template-columns: 1fr 1fr; } }
+  .platform-card { background: var(--panel); padding: 28px 28px 26px; display: flex; flex-direction: column; gap: 14px; }
+  .platform-status { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-dim); }
+  .platform-status .dot2 { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .platform-status .dot2.live { background: var(--teal); box-shadow: 0 0 8px 1px rgba(70,199,190,0.5); }
+  .platform-status .dot2.dev { background: var(--amber); box-shadow: 0 0 8px 1px rgba(240,169,62,0.5); }
+  .platform-card h3 { font-family: var(--font-body); font-weight: 650; font-size: 19px; margin: 0; }
+  .platform-card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0; }
+  .platform-tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted-dim); margin-top: auto; padding-top: 6px; }
+
+  /* ---------- Process ---------- */
+  .process { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+  .process-step { display: grid; grid-template-columns: 48px 1fr; gap: 18px; padding: 20px 24px; border-bottom: 1px solid var(--line-soft); }
+  .process-step:last-child { border-bottom: none; }
+  .process-num { font-family: var(--font-display); font-size: 21px; color: var(--amber); line-height: 1; padding-top: 2px; }
+  .process-title { font-weight: 650; font-size: 15.5px; margin-bottom: 4px; }
+  .process-desc { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  /* ---------- Trust ---------- */
+  .trust { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .trust-item { background: var(--panel); padding: 16px 22px; display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; color: var(--text); line-height: 1.5; }
+  .trust-item::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--amber); margin-top: 7px; flex-shrink: 0; }
 
   /* ---------- Departures board ---------- */
   .board-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
@@ -151,15 +187,6 @@
   .legend-swatch { width: 20px; height: 0; border-top: 2px solid var(--text); flex-shrink: 0; }
   .legend-swatch.dashed { border-top-style: dashed; border-top-color: var(--muted); }
   .legend-swatch.gate { width: 14px; height: 14px; border: none; background: var(--amber); border-radius: 3px; }
-
-  /* ---------- Autonomy explainer ---------- */
-  .lane-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  @media (min-width: 760px) { .lane-grid { grid-template-columns: 1fr 1fr; } }
-  .lane { background: var(--panel); padding: 24px 26px; display: flex; flex-direction: column; gap: 10px; }
-  .lane-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-dim); }
-  .lane h3 { font-family: var(--font-body); font-weight: 650; font-size: 16px; margin: 0; }
-  .lane p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
-  .lane.gate-lane { background: linear-gradient(180deg, rgba(240,169,62,0.07), transparent 40%), var(--panel); }
 
   /* ---------- Module table ---------- */
   .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
@@ -207,11 +234,10 @@
   <div class="nav-inner">
     <span class="wordmark"><span class="dot"></span>ads-ai</span>
     <ul class="nav-links">
-      <li><a href="#scale">Обзор</a></li>
-      <li><a href="#architecture">Архитектура</a></li>
-      <li><a href="#autonomy">Автономность</a></li>
-      <li><a href="#modules">Модули</a></li>
-      <li><a href="#tokens">Токены</a></li>
+      <li><a href="#platforms">Платформы</a></li>
+      <li><a href="#process">Процесс</a></li>
+      <li><a href="#trust">Доверие</a></li>
+      <li><a href="#architecture">Технология</a></li>
       <li><a href="#journal">Журнал</a></li>
     </ul>
     <a class="nav-gh" href="https://github.com/yunusovt983-art/ai-google-ads" target="_blank" rel="noopener">GitHub ↗</a>
@@ -222,17 +248,21 @@
 
   <header class="hero">
     <div>
-      <span class="kicker">AI-оператор Google Ads · Rust</span>
-      <h1 class="title">Ничего не тратится<br>без сигнала «<em>можно</em>».</h1>
+      <span class="kicker">Google Ads · Meta Ads · AI-управление</span>
+      <h1 class="title">Реклама под ключ.<br>Бюджет — под вашим <em>ключом</em>.</h1>
       <p class="hero-thesis">
-        ads-ai анализирует кампании, предлагает каждое изменение бюджета,
-        паузу, минус-слово — и не применяет ни одного без явного человеческого
-        одобрения. Автономность — это не отмена правила, а заранее подписанный
-        пропуск для узкого класса безопасных решений.
+        ads-ai ведёт кампании в Google Ads — анализирует, готовит каждое
+        решение о бюджете, паузе, объявлении — и не применяет ни одного
+        без вашего явного «да». Meta Ads (Facebook и Instagram) — тот же
+        принцип, следующий этап дорожной карты.
       </p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#architecture">Смотреть архитектуру</a>
+        <a class="btn btn-primary" href="#process">Как мы работаем</a>
         <a class="btn btn-ghost" href="https://github.com/yunusovt983-art/ai-google-ads" target="_blank" rel="noopener">Исходники ↗</a>
+      </div>
+      <div class="platform-pills">
+        <span class="platform-pill"><span class="dot2 live"></span>Google Ads · работает</span>
+        <span class="platform-pill"><span class="dot2 dev"></span>Meta Ads · в разработке</span>
       </div>
     </div>
     <div class="gate-scene" aria-hidden="true">
@@ -262,31 +292,87 @@
     </div>
   </header>
 
-  <section id="scale">
+  <section id="platforms">
     <div class="section-head">
-      <div class="eyebrow">Обзор</div>
-      <h2>Масштаб проекта</h2>
-      <p class="section-note">Цифры — по рабочему дереву репозитория на момент публикации, ветка <code>main</code>.</p>
+      <div class="eyebrow">Платформы</div>
+      <h2>Одна AI-команда, два рекламных кабинета</h2>
+      <p class="section-note">Один и тот же принцип на обеих площадках: предложить, обосновать цифрами, применить только с вашего согласия.</p>
     </div>
-    <div class="board-grid">
-      <div class="board-cell"><span class="board-num">5 137</span><span class="board-cap">строк Rust (4 360 в src, 777 в тестах)</span></div>
-      <div class="board-cell"><span class="board-num">14</span><span class="board-cap">файлов .rs, 13 модулей + интеграционный набор</span></div>
-      <div class="board-cell teal"><span class="board-num">64</span><span class="board-cap">теста · 39 unit + 25 integration, без сети</span></div>
-      <div class="board-cell"><span class="board-num">10</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>revert</code></span></div>
-      <div class="board-cell"><span class="board-num">7</span><span class="board-cap">типов предложений, каждый — с undo</span></div>
-      <div class="board-cell teal"><span class="board-num">2</span><span class="board-cap">внешних API, оба — за мок-диспетчером</span></div>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <span class="platform-status"><span class="dot2 live"></span>Live</span>
+        <h3>Google Ads</h3>
+        <p>Генерация кампаний из брифа, анализ CTR/CPC/CPA, A/B объявлений, минус-слова по поисковым запросам, паузы слабых ключей и объявлений — весь цикл через REST + GAQL, за approval gate.</p>
+        <span class="platform-tag">REST · GAQL v21 · OAuth refresh</span>
+      </div>
+      <div class="platform-card">
+        <span class="platform-status"><span class="dot2 dev"></span>В разработке</span>
+        <h3>Meta Ads <span style="color:var(--muted-dim); font-weight: 500;">· Facebook &amp; Instagram</span></h3>
+        <p>Та же архитектура предложений и тот же approval gate — теперь для Meta Marketing API: кампании, наборы объявлений, креативы. Следующий этап дорожной карты проекта.</p>
+        <span class="platform-tag">Marketing API · запланировано</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-head">
+      <div class="eyebrow">Как мы работаем</div>
+      <h2>Четыре шага между бюджетом и результатом</h2>
+    </div>
+    <div class="process">
+      <div class="process-step">
+        <div class="process-num">1</div>
+        <div>
+          <div class="process-title">Анализ</div>
+          <div class="process-desc">Статистика по кампаниям, ключевым словам, объявлениям и поисковым запросам подтягивается каждый цикл — вручную или по расписанию демона.</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">2</div>
+        <div>
+          <div class="process-title">Предложение</div>
+          <div class="process-desc">AI формулирует конкретное решение с цифрами и причиной — «поставить на паузу», «поднять бюджет на 20%», «добавить минус-слово», а не общие советы.</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">3</div>
+        <div>
+          <div class="process-title">Ваше «да»</div>
+          <div class="process-desc">Вручную по одному, разом через <code>approve --all</code>, или заранее — по узкому опциональному правилу. Ничего не применяется без этого шага.</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">4</div>
+        <div>
+          <div class="process-title">Исполнение и след</div>
+          <div class="process-desc">Решение применяется, при необходимости откатывается одной командой, а само решение и его причина остаются в журнале.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust">
+    <div class="section-head">
+      <div class="eyebrow">Почему это безопасно</div>
+      <h2>Бюджет клиента — не место для экспериментов</h2>
+    </div>
+    <div class="trust">
+      <div class="trust-item">Approval gate — единственный путь к трате бюджета, зашит в код, а не в настройках.</div>
+      <div class="trust-item">Полный откат — любое применённое решение можно вернуть «как было» одной командой.</div>
+      <div class="trust-item">Жёсткий потолок дневного бюджета, который система не может обойти сама.</div>
+      <div class="trust-item">Создание и полное отключение кампании — только вручную, всегда, без исключений.</div>
+      <div class="trust-item">Автономия — опционально и только для узкого списка низкорисковых решений.</div>
     </div>
   </section>
 
   <section id="architecture">
     <div class="section-head">
-      <div class="eyebrow">Компонентная схема</div>
-      <h2>Один оркестратор, два мокаемых контура, один шлагбаум</h2>
+      <div class="eyebrow">Технология</div>
+      <h2 class="tight">Один оркестратор, два мокаемых контура, один шлагбаум</h2>
       <p class="section-note">
-        CLI и демон — один и тот же код. Обе внешние зависимости — Claude и
-        Google Ads — спрятаны за enum-диспетчером с полноценным моком, поэтому
-        весь цикл прогоняется без единого ключа. На всей схеме только одна
-        стрелка умеет тратить деньги.
+        Для тех, кому интересно, как это устроено внутри: CLI и демон — один
+        и тот же код, обе внешние зависимости спрятаны за диспетчером с
+        полноценным моком. На всей схеме только одна стрелка умеет тратить деньги.
       </p>
     </div>
 
@@ -394,34 +480,10 @@
     </div>
   </section>
 
-  <section id="autonomy">
+  <section id="engineering">
     <div class="section-head">
-      <div class="eyebrow">D-008 · ревизия D-002</div>
-      <h2>Автономность — это подписанный пропуск, не отмена контроля</h2>
-      <p class="section-note">
-        По умолчанию агент только предлагает. <code>autonomy.enabled = true</code>
-        открывает второй, узкий вход в тот же самый шлагбаум — не обходной путь.
-      </p>
-    </div>
-
-    <div class="lane-grid">
-      <div class="lane">
-        <span class="lane-tag">Вход 1 · по умолчанию</span>
-        <h3>Человек — <code>proposals approve</code></h3>
-        <p>Вы просматриваете <code>proposals list</code> / <code>show &lt;id&gt;</code> и одобряете вручную, по одному или разом через <code>--all</code>.</p>
-      </div>
-      <div class="lane gate-lane">
-        <span class="lane-tag">Вход 2 · opt-in</span>
-        <h3>Политика — <code>[autonomy]</code> в конфиге</h3>
-        <p>Заранее сконфигурированное предразрешение для узкого класса действий, применяемое внутри <code>analyze_once()</code> сразу после генерации предложения.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="modules">
-    <div class="section-head">
-      <div class="eyebrow">Реестр модулей</div>
-      <h2>Где что живёт</h2>
+      <div class="eyebrow">Инженерия</div>
+      <h2 class="tight">Реестр модулей</h2>
     </div>
     <div class="table-scroll">
       <table>
@@ -457,15 +519,24 @@
         <span class="badge">Telegram Bot API</span>
       </div>
     </div>
+
+    <div class="board-grid" style="margin-top:26px;">
+      <div class="board-cell"><span class="board-num">5 137</span><span class="board-cap">строк Rust (4 360 в src, 777 в тестах)</span></div>
+      <div class="board-cell"><span class="board-num">14</span><span class="board-cap">файлов .rs, 13 модулей + интеграционный набор</span></div>
+      <div class="board-cell teal"><span class="board-num">64</span><span class="board-cap">теста · 39 unit + 25 integration, без сети</span></div>
+      <div class="board-cell"><span class="board-num">10</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>revert</code></span></div>
+      <div class="board-cell"><span class="board-num">7</span><span class="board-cap">типов предложений, каждый — с undo</span></div>
+      <div class="board-cell teal"><span class="board-num">2</span><span class="board-cap">внешних API, оба — за мок-диспетчером</span></div>
+    </div>
   </section>
 
   <section id="tokens">
     <div class="section-head">
-      <div class="eyebrow">Расход токенов</div>
-      <h2>Сколько Claude Code стоило это построить</h2>
+      <div class="eyebrow">Построено с Claude Code</div>
+      <h2 class="tight">Расход токенов на момент публикации</h2>
       <p class="section-note">
         Личная статистика использования Claude Code за время работы над проектом
-        (аккаунт целиком, не только этот репозиторий) — снимок на момент публикации.
+        (аккаунт целиком, не только этот репозиторий).
       </p>
     </div>
     <div class="board-grid">
@@ -482,8 +553,7 @@
   <section id="journal">
     <div class="section-head">
       <div class="eyebrow">Журнал</div>
-      <h2>Как это строилось</h2>
-      <p class="section-note">Полная версия с находками и граблями — во внутренней базе знаний проекта (Wiki), не публикуется вместе с этой страницей.</p>
+      <h2 class="tight">Как это строилось</h2>
     </div>
     <div class="log">
       <div class="log-entry">
@@ -508,7 +578,11 @@
       </div>
       <div class="log-entry">
         <span class="log-date">2026-07-12</span>
-        <div class="log-body"><span class="log-title"><span class="tick">●</span>Полуавтономный режим (D-008)</span><span class="log-desc">Opt-in авто-применение с жёстким потолком в коде — эта страница.</span></div>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Полуавтономный режим (D-008)</span><span class="log-desc">Opt-in авто-применение с жёстким потолком в коде.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-13</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Позиционирование Google Ads + Meta Ads</span><span class="log-desc">Эта страница: платформы, процесс работы, доверие — Meta Ads в разработке.</span></div>
       </div>
     </div>
   </section>
