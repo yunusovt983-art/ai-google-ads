@@ -160,13 +160,6 @@
   .lane h3 { font-family: var(--font-body); font-weight: 650; font-size: 16px; margin: 0; }
   .lane p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
   .lane.gate-lane { background: linear-gradient(180deg, rgba(240,169,62,0.07), transparent 40%), var(--panel); }
-  .ceiling {
-    border-left: 3px solid var(--amber);
-    padding: 20px 24px; margin-top: 22px; background: var(--panel); border-radius: 0 8px 8px 0;
-  }
-  .ceiling ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .ceiling li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 14px; color: var(--text); line-height: 1.5; }
-  .ceiling li::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--amber); margin-top: 6px; }
 
   /* ---------- Module table ---------- */
   .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
@@ -422,18 +415,6 @@
         <h3>Политика — <code>[autonomy]</code> в конфиге</h3>
         <p>Заранее сконфигурированное предразрешение для узкого класса действий, применяемое внутри <code>analyze_once()</code> сразу после генерации предложения.</p>
       </div>
-    </div>
-
-    <div class="ceiling">
-      <strong style="font-size:14px;">Потолок зашит в код, а не в конфиг</strong>
-      <ul>
-        <li><code>CreateCampaign</code>, <code>PauseCampaign</code>, <code>EnableCampaign</code> не проходят авто-применение никогда — даже если их вписать в <code>allowed_actions</code>. Проверяет это <code>is_autonomy_eligible()</code>, а не намерение автора конфига.</li>
-        <li>Дефолт: <code>enabled = false</code>, допущены только <code>add_negative_keyword</code>, <code>pause_keyword</code>, <code>pause_ad</code> — <code>update_budget</code> нужно включить явно.</li>
-        <li>Изменение бюджета проходит автоматически только в пределах <code>max_budget_change_percent</code> (15% по умолчанию) — независимо и вдобавок к общему потолку <code>agent.max_daily_budget_micros</code>.</li>
-        <li>Не больше <code>max_auto_applies_per_cycle</code> (3 по умолчанию) авто-применений за один цикл анализа.</li>
-        <li>Undo записывается одинаково для обоих входов: <code>proposals revert &lt;id&gt;</code> откатывает авто-применённое предложение так же, как ручное.</li>
-        <li>Прозрачность: у авто-применённого предложения — метка <code>applied_by = "auto"</code>, видна в CLI (<code>(auto)</code>) и в Telegram-уведомлении.</li>
-      </ul>
     </div>
   </section>
 
