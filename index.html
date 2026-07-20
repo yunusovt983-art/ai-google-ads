@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ads-ai — Google Ads и Meta Ads без слепых трат</title>
-<meta name="description" content="AI-команда для Google Ads (Meta Ads — в разработке): анализирует кампании, готовит каждое решение о бюджете — и не тратит ни рубля без вашего разрешения.">
+<meta name="description" content="AI-команда для Google Ads и Meta Ads: анализирует кампании, готовит каждое решение о бюджете — и не тратит ни рубля без вашего разрешения.">
 <style>
   :root {
     --bg: #0A0E15;
@@ -251,10 +251,10 @@
       <span class="kicker">Google Ads · Meta Ads · AI-управление</span>
       <h1 class="title">Реклама под ключ.<br>Бюджет — под вашим <em>ключом</em>.</h1>
       <p class="hero-thesis">
-        ads-ai ведёт кампании в Google Ads — анализирует, готовит каждое
-        решение о бюджете, паузе, объявлении — и не применяет ни одного
-        без вашего явного «да». Meta Ads (Facebook и Instagram) — тот же
-        принцип, следующий этап дорожной карты.
+        ads-ai ведёт кампании в Google Ads и Meta Ads (Facebook, Instagram) —
+        анализирует, готовит каждое решение о бюджете, паузе, объявлении — и
+        не применяет ни одного без вашего явного «да». Один цикл анализа,
+        оба кабинета, общий approval gate.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#process">Как мы работаем</a>
@@ -262,7 +262,7 @@
       </div>
       <div class="platform-pills">
         <span class="platform-pill"><span class="dot2 live"></span>Google Ads · работает</span>
-        <span class="platform-pill"><span class="dot2 dev"></span>Meta Ads · в разработке</span>
+        <span class="platform-pill"><span class="dot2 live"></span>Meta Ads · работает</span>
       </div>
     </div>
     <div class="gate-scene" aria-hidden="true">
@@ -306,10 +306,10 @@
         <span class="platform-tag">REST · GAQL v21 · OAuth refresh</span>
       </div>
       <div class="platform-card">
-        <span class="platform-status"><span class="dot2 dev"></span>В разработке</span>
+        <span class="platform-status"><span class="dot2 live"></span>Live</span>
         <h3>Meta Ads <span style="color:var(--muted-dim); font-weight: 500;">· Facebook &amp; Instagram</span></h3>
-        <p>Та же архитектура предложений и тот же approval gate — теперь для Meta Marketing API: кампании, наборы объявлений, креативы. Следующий этап дорожной карты проекта.</p>
-        <span class="platform-tag">Marketing API · запланировано</span>
+        <p>Анализ кампаний и A/B объявлений, пауза/включение, изменение бюджета — тот же approval gate и тот же цикл анализа, что и у Google Ads, через Marketing API. Создание кампаний с нуля — следующий шаг.</p>
+        <span class="platform-tag">Graph/Marketing API · System User токен</span>
       </div>
     </div>
   </section>
@@ -478,6 +478,11 @@
       <div class="legend-item"><span class="legend-swatch dashed"></span> не подключено или opt-in</div>
       <div class="legend-item"><span class="legend-swatch gate"></span> требует пропуска через gate</div>
     </div>
+    <p class="section-note" style="margin-top:14px;">
+      Meta Ads зеркалит эту же схему отдельным блоком —
+      <code>MetaAdsClient</code> рядом с <code>AdsClient</code>, тот же
+      <code>Agent</code>, тот же approval gate.
+    </p>
   </section>
 
   <section id="engineering">
@@ -489,19 +494,22 @@
       <table>
         <thead><tr><th>Путь</th><th>Строк</th><th>Ответственность</th></tr></thead>
         <tbody>
-          <tr><td class="path">agent.rs</td><td class="loc">535</td><td class="resp">Оркестратор: цикл анализа, approval gate, автономный проход, потолок бюджета, revert.</td></tr>
-          <tr><td class="path">ads/mock.rs</td><td class="loc">726</td><td class="resp">Детерминированный seed-аккаунт Google Ads для офлайн-разработки.</td></tr>
-          <tr><td class="path">ads/google.rs</td><td class="loc">564</td><td class="resp">Реальный REST-клиент: OAuth refresh, GAQL-чтение, mutate-запись.</td></tr>
-          <tr><td class="path">ai/mock.rs</td><td class="loc">463</td><td class="resp">Эвристики, заменяющие Claude по идентичному интерфейсу — без сети.</td></tr>
-          <tr><td class="path">proposals.rs</td><td class="loc">425</td><td class="resp">Типы Proposal / UndoAction, файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
-          <tr><td class="path">main.rs</td><td class="loc">385</td><td class="resp">CLI на clap — 10 подкоманд, тонкая обёртка над <code>Agent</code>.</td></tr>
-          <tr><td class="path">ai/mod.rs</td><td class="loc">381</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages со схемами structured output.</td></tr>
-          <tr><td class="path">config.rs</td><td class="loc">264</td><td class="resp">Схема <code>config.toml</code>, включая <code>AutonomyConfig</code> и <code>TelegramConfig</code>.</td></tr>
-          <tr><td class="path">ads/mod.rs</td><td class="loc">259</td><td class="resp"><code>AdsClient</code>-энум и общие доменные типы (статистика, планы).</td></tr>
-          <tr><td class="path">notify.rs</td><td class="loc">256</td><td class="resp">Telegram-нотификатор — best-effort, выключен по умолчанию.</td></tr>
-          <tr><td class="path">ai/prompts.rs</td><td class="loc">68</td><td class="resp">Системные промпты: генератор, аналитик, репортёр.</td></tr>
+          <tr><td class="path">agent.rs</td><td class="loc">855</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate, автономный проход, потолок бюджета, revert.</td></tr>
+          <tr><td class="path">ads/mock.rs</td><td class="loc">742</td><td class="resp">Детерминированный seed-аккаунт Google Ads для офлайн-разработки.</td></tr>
+          <tr><td class="path">ai/mock.rs</td><td class="loc">603</td><td class="resp">Эвристики, заменяющие Claude по идентичному интерфейсу — без сети, обе платформы.</td></tr>
+          <tr><td class="path">ads/google.rs</td><td class="loc">572</td><td class="resp">Реальный REST-клиент: OAuth refresh, GAQL-чтение, mutate-запись.</td></tr>
+          <tr><td class="path">proposals.rs</td><td class="loc">531</td><td class="resp">Типы Proposal / UndoAction (11 действий), файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
+          <tr><td class="path">ai/mod.rs</td><td class="loc">466</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages, схемы structured output, отдельный анализ Meta.</td></tr>
+          <tr><td class="path">main.rs</td><td class="loc">427</td><td class="resp">CLI на clap — 11 подкоманд, тонкая обёртка над <code>Agent</code>.</td></tr>
+          <tr><td class="path">config.rs</td><td class="loc">341</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code>, <code>MetaAdsConfig</code>.</td></tr>
+          <tr><td class="path">meta/mock.rs</td><td class="loc">306</td><td class="resp">Детерминированный seed-аккаунт Meta Ads, независимое состояние.</td></tr>
+          <tr><td class="path">meta/real.rs</td><td class="loc">285</td><td class="resp">REST-клиент Graph/Marketing API — долгоживущий токен, без OAuth-refresh.</td></tr>
+          <tr><td class="path">notify.rs</td><td class="loc">260</td><td class="resp">Telegram-нотификатор — best-effort, выключен по умолчанию.</td></tr>
+          <tr><td class="path">ads/mod.rs</td><td class="loc">259</td><td class="resp"><code>AdsClient</code>-энум и общие доменные типы (переиспользуются Meta-слоем).</td></tr>
+          <tr><td class="path">ai/prompts.rs</td><td class="loc">102</td><td class="resp">Системные промпты: генератор, аналитик Google, аналитик Meta, репортёр.</td></tr>
+          <tr><td class="path">meta/mod.rs</td><td class="loc">86</td><td class="resp"><code>MetaAdsClient</code>-энум, зеркалит <code>AdsClient</code>.</td></tr>
           <tr><td class="path">report.rs</td><td class="loc">24</td><td class="resp">Markdown-отчёт об эффективности кампаний.</td></tr>
-          <tr><td class="path">lib.rs</td><td class="loc">10</td><td class="resp">Фасад крейта.</td></tr>
+          <tr><td class="path">lib.rs</td><td class="loc">11</td><td class="resp">Фасад крейта.</td></tr>
         </tbody>
       </table>
     </div>
@@ -516,17 +524,18 @@
         <span class="badge">Serde</span>
         <span class="badge">Claude Messages API</span>
         <span class="badge">Google Ads REST · GAQL v21</span>
+        <span class="badge">Meta Graph/Marketing API v21.0</span>
         <span class="badge">Telegram Bot API</span>
       </div>
     </div>
 
     <div class="board-grid" style="margin-top:26px;">
-      <div class="board-cell"><span class="board-num">5 137</span><span class="board-cap">строк Rust (4 360 в src, 777 в тестах)</span></div>
-      <div class="board-cell"><span class="board-num">14</span><span class="board-cap">файлов .rs, 13 модулей + интеграционный набор</span></div>
-      <div class="board-cell teal"><span class="board-num">64</span><span class="board-cap">теста · 39 unit + 25 integration, без сети</span></div>
-      <div class="board-cell"><span class="board-num">10</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>revert</code></span></div>
-      <div class="board-cell"><span class="board-num">7</span><span class="board-cap">типов предложений, каждый — с undo</span></div>
-      <div class="board-cell teal"><span class="board-num">2</span><span class="board-cap">внешних API, оба — за мок-диспетчером</span></div>
+      <div class="board-cell"><span class="board-num">6 959</span><span class="board-cap">строк Rust (5 870 в src, 1 089 в тестах)</span></div>
+      <div class="board-cell"><span class="board-num">17</span><span class="board-cap">файлов .rs, 16 модулей + интеграционный набор</span></div>
+      <div class="board-cell teal"><span class="board-num">83</span><span class="board-cap">теста · 51 unit + 32 integration, без сети</span></div>
+      <div class="board-cell"><span class="board-num">11</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>meta</code></span></div>
+      <div class="board-cell"><span class="board-num">11</span><span class="board-cap">типов предложений (7 Google + 4 Meta), каждый — с undo</span></div>
+      <div class="board-cell teal"><span class="board-num">3</span><span class="board-cap">внешних API, все — за мок-диспетчером</span></div>
     </div>
   </section>
 
@@ -582,7 +591,11 @@
       </div>
       <div class="log-entry">
         <span class="log-date">2026-07-13</span>
-        <div class="log-body"><span class="log-title"><span class="tick">●</span>Позиционирование Google Ads + Meta Ads</span><span class="log-desc">Эта страница: платформы, процесс работы, доверие — Meta Ads в разработке.</span></div>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Позиционирование Google Ads + Meta Ads</span><span class="log-desc">Эта страница: платформы, процесс работы, доверие.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-13</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Meta Ads: второй кабинет</span><span class="log-desc">Анализ, A/B объявлений, пауза/бюджет — тот же approval gate, что и у Google Ads, один цикл на оба кабинета.</span></div>
       </div>
     </div>
   </section>
