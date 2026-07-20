@@ -468,8 +468,8 @@
           <path d="M-8,-6 L8,0 L-8,6 L-4,0 Z"></path>
         </g>
         <text x="1005" y="674" text-anchor="middle" font-family="var(--font-body)" font-weight="650" font-size="13.5" fill="var(--text)">Telegram Bot API</text>
-        <text x="1005" y="690" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--muted)">…/bot&lt;token&gt;/sendMessage</text>
-        <text x="1005" y="705" text-anchor="middle" font-family="var(--font-body)" font-size="10" fill="var(--muted-dim)">выключено по умолчанию</text>
+        <text x="1005" y="690" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--muted)">sendMessage + getUpdates</text>
+        <text x="1005" y="705" text-anchor="middle" font-family="var(--font-body)" font-size="10" fill="var(--muted-dim)">уведомления — opt-in; approve-кнопки — opt-in поверх опт-ина</text>
       </svg>
     </div>
 
@@ -481,7 +481,11 @@
     <p class="section-note" style="margin-top:14px;">
       Meta Ads зеркалит эту же схему отдельным блоком —
       <code>MetaAdsClient</code> рядом с <code>AdsClient</code>, тот же
-      <code>Agent</code>, тот же approval gate.
+      <code>Agent</code>, тот же approval gate. Telegram Bot API — двунаправленный:
+      исходящие уведомления (<code>sendMessage</code>) и, при
+      <code>allow_remote_approve</code>, входящие нажатия кнопок
+      (<code>getUpdates</code> long-polling) — оба ведут в тот же approval gate,
+      что <code>proposals approve</code>/<code>reject</code>.
     </p>
   </section>
 
@@ -494,17 +498,17 @@
       <table>
         <thead><tr><th>Путь</th><th>Строк</th><th>Ответственность</th></tr></thead>
         <tbody>
-          <tr><td class="path">agent.rs</td><td class="loc">855</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate, автономный проход, потолок бюджета, revert.</td></tr>
+          <tr><td class="path">agent.rs</td><td class="loc">983</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate, автономный проход, потолок бюджета, revert, параллельный long-polling Telegram-кнопок.</td></tr>
           <tr><td class="path">ads/mock.rs</td><td class="loc">742</td><td class="resp">Детерминированный seed-аккаунт Google Ads для офлайн-разработки.</td></tr>
           <tr><td class="path">ai/mock.rs</td><td class="loc">603</td><td class="resp">Эвристики, заменяющие Claude по идентичному интерфейсу — без сети, обе платформы.</td></tr>
           <tr><td class="path">ads/google.rs</td><td class="loc">572</td><td class="resp">Реальный REST-клиент: OAuth refresh, GAQL-чтение, mutate-запись.</td></tr>
           <tr><td class="path">proposals.rs</td><td class="loc">531</td><td class="resp">Типы Proposal / UndoAction (11 действий), файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
+          <tr><td class="path">notify.rs</td><td class="loc">531</td><td class="resp">Telegram: best-effort уведомления + опционально inline-кнопки approve/reject, long-polling getUpdates.</td></tr>
           <tr><td class="path">ai/mod.rs</td><td class="loc">466</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages, схемы structured output, отдельный анализ Meta.</td></tr>
-          <tr><td class="path">main.rs</td><td class="loc">427</td><td class="resp">CLI на clap — 11 подкоманд, тонкая обёртка над <code>Agent</code>.</td></tr>
-          <tr><td class="path">config.rs</td><td class="loc">341</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code>, <code>MetaAdsConfig</code>.</td></tr>
+          <tr><td class="path">main.rs</td><td class="loc">424</td><td class="resp">CLI на clap — 11 подкоманд, тонкая обёртка над <code>Agent</code>.</td></tr>
+          <tr><td class="path">config.rs</td><td class="loc">354</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code>, <code>MetaAdsConfig</code>.</td></tr>
           <tr><td class="path">meta/mock.rs</td><td class="loc">306</td><td class="resp">Детерминированный seed-аккаунт Meta Ads, независимое состояние.</td></tr>
           <tr><td class="path">meta/real.rs</td><td class="loc">285</td><td class="resp">REST-клиент Graph/Marketing API — долгоживущий токен, без OAuth-refresh.</td></tr>
-          <tr><td class="path">notify.rs</td><td class="loc">260</td><td class="resp">Telegram-нотификатор — best-effort, выключен по умолчанию.</td></tr>
           <tr><td class="path">ads/mod.rs</td><td class="loc">259</td><td class="resp"><code>AdsClient</code>-энум и общие доменные типы (переиспользуются Meta-слоем).</td></tr>
           <tr><td class="path">ai/prompts.rs</td><td class="loc">102</td><td class="resp">Системные промпты: генератор, аналитик Google, аналитик Meta, репортёр.</td></tr>
           <tr><td class="path">meta/mod.rs</td><td class="loc">86</td><td class="resp"><code>MetaAdsClient</code>-энум, зеркалит <code>AdsClient</code>.</td></tr>
@@ -530,9 +534,9 @@
     </div>
 
     <div class="board-grid" style="margin-top:26px;">
-      <div class="board-cell"><span class="board-num">6 959</span><span class="board-cap">строк Rust (5 870 в src, 1 089 в тестах)</span></div>
+      <div class="board-cell"><span class="board-num">7 414</span><span class="board-cap">строк Rust (6 279 в src, 1 135 в тестах)</span></div>
       <div class="board-cell"><span class="board-num">17</span><span class="board-cap">файлов .rs, 16 модулей + интеграционный набор</span></div>
-      <div class="board-cell teal"><span class="board-num">83</span><span class="board-cap">теста · 51 unit + 32 integration, без сети</span></div>
+      <div class="board-cell teal"><span class="board-num">90</span><span class="board-cap">теста · 56 unit + 34 integration, без сети</span></div>
       <div class="board-cell"><span class="board-num">11</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>meta</code></span></div>
       <div class="board-cell"><span class="board-num">11</span><span class="board-cap">типов предложений (7 Google + 4 Meta), каждый — с undo</span></div>
       <div class="board-cell teal"><span class="board-num">3</span><span class="board-cap">внешних API, все — за мок-диспетчером</span></div>
@@ -596,6 +600,10 @@
       <div class="log-entry">
         <span class="log-date">2026-07-13</span>
         <div class="log-body"><span class="log-title"><span class="tick">●</span>Meta Ads: второй кабинет</span><span class="log-desc">Анализ, A/B объявлений, пауза/бюджет — тот же approval gate, что и у Google Ads, один цикл на оба кабинета.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-20</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Approve прямо из Telegram</span><span class="log-desc">Inline-кнопки ✅/❌ под каждым предложением, long-polling вместо webhook, отдельный опт-ин поверх уведомлений — тот же apply/reject-путь, что у CLI.</span></div>
       </div>
     </div>
   </section>
