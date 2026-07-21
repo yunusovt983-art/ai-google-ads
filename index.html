@@ -498,23 +498,24 @@
       <table>
         <thead><tr><th>Путь</th><th>Строк</th><th>Ответственность</th></tr></thead>
         <tbody>
-          <tr><td class="path">agent.rs</td><td class="loc">1221</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate, автономный проход, два потолка бюджета (на кампанию и суммарный), алерт о подряд-сбоях, revert, параллельный long-polling Telegram-кнопок.</td></tr>
+          <tr><td class="path">agent.rs</td><td class="loc">1451</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate (с <code>apply_lock</code>, сериализующим apply между конкурентными циклами), автономный проход, два потолка бюджета, алерт о подряд-сбоях, тихие часы, отложенное применение по расписанию, revert, long-polling Telegram-кнопок — всё через <code>tokio::select!</code>.</td></tr>
+          <tr><td class="path">main.rs</td><td class="loc">746</td><td class="resp">CLI на clap — 13 подкоманд, тонкая обёртка над <code>Agent</code>; <code>ads-ai doctor</code> обходит <code>Agent::new()</code>, проверяет секции конфига независимо.</td></tr>
+          <tr><td class="path">notify.rs</td><td class="loc">716</td><td class="resp">Telegram: best-effort уведомления + опционально inline-кнопки approve/reject, long-polling getUpdates, очередь тихих часов.</td></tr>
           <tr><td class="path">ads/mock.rs</td><td class="loc">742</td><td class="resp">Детерминированный seed-аккаунт Google Ads для офлайн-разработки.</td></tr>
-          <tr><td class="path">main.rs</td><td class="loc">669</td><td class="resp">CLI на clap — 12 подкоманд, тонкая обёртка над <code>Agent</code>; <code>ads-ai doctor</code> обходит <code>Agent::new()</code>, проверяет секции конфига независимо.</td></tr>
           <tr><td class="path">ai/mock.rs</td><td class="loc">636</td><td class="resp">Эвристики, заменяющие Claude по идентичному интерфейсу — без сети, обе платформы.</td></tr>
           <tr><td class="path">ai/mod.rs</td><td class="loc">607</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages, схемы structured output, отдельный анализ и генератор плана для Meta, retry/backoff, <code>health_check()</code> для <code>doctor</code>.</td></tr>
           <tr><td class="path">ads/google.rs</td><td class="loc">592</td><td class="resp">Реальный REST-клиент: OAuth refresh, GAQL-чтение, mutate-запись, retry/backoff на 429/5xx.</td></tr>
-          <tr><td class="path">proposals.rs</td><td class="loc">548</td><td class="resp">Типы Proposal / UndoAction (12 действий), файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
-          <tr><td class="path">notify.rs</td><td class="loc">531</td><td class="resp">Telegram: best-effort уведомления + опционально inline-кнопки approve/reject, long-polling getUpdates.</td></tr>
-          <tr><td class="path">ads/mod.rs</td><td class="loc">443</td><td class="resp"><code>AdsClient</code>-энум, общие доменные типы (переиспользуются Meta-слоем), валидация лимитов RSA.</td></tr>
+          <tr><td class="path">proposals.rs</td><td class="loc">576</td><td class="resp">Типы Proposal / UndoAction (12 действий), статус <code>Scheduled</code>, файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
+          <tr><td class="path">ads/mod.rs</td><td class="loc">564</td><td class="resp"><code>AdsClient</code>-энум, общие доменные типы (переиспользуются Meta-слоем), валидация лимитов RSA, детерминированный отбор ценных search terms.</td></tr>
           <tr><td class="path">meta/real.rs</td><td class="loc">436</td><td class="resp">REST-клиент Graph/Marketing API — долгоживущий токен, без OAuth-refresh, retry/backoff, <code>create_campaign()</code> (Campaign → Ad Set → Creative → Ad).</td></tr>
-          <tr><td class="path">config.rs</td><td class="loc">390</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code>, <code>MetaAdsConfig</code>.</td></tr>
+          <tr><td class="path">config.rs</td><td class="loc">411</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code> (с тихими часами), <code>MetaAdsConfig</code>.</td></tr>
+          <tr><td class="path">history.rs</td><td class="loc">323</td><td class="resp"><code>data/history.sqlite3</code> (rusqlite bundled) — снапшот статистики раз в день на кампанию, аддитивный слой поверх approval-конвейера, чтение для <code>ads-ai trends</code>.</td></tr>
           <tr><td class="path">meta/mock.rs</td><td class="loc">326</td><td class="resp">Детерминированный seed-аккаунт Meta Ads, независимое состояние.</td></tr>
           <tr><td class="path">meta/mod.rs</td><td class="loc">290</td><td class="resp"><code>MetaAdsClient</code>-энум, зеркалит <code>AdsClient</code>; <code>MetaCampaignPlan</code> и структурная валидация плана.</td></tr>
           <tr><td class="path">retry.rs</td><td class="loc">160</td><td class="resp">Общая retry-обёртка: классификация retryable/fatal, экспоненциальный backoff, уважает Retry-After.</td></tr>
           <tr><td class="path">ai/prompts.rs</td><td class="loc">126</td><td class="resp">Системные промпты: генераторы (Google, Meta), аналитики (Google, Meta), репортёр.</td></tr>
-          <tr><td class="path">report.rs</td><td class="loc">24</td><td class="resp">Markdown-отчёт об эффективности кампаний.</td></tr>
-          <tr><td class="path">lib.rs</td><td class="loc">12</td><td class="resp">Фасад крейта.</td></tr>
+          <tr><td class="path">report.rs</td><td class="loc">59</td><td class="resp">Markdown-отчёт об эффективности кампаний + детерминированная секция кандидатов на расширение семантики.</td></tr>
+          <tr><td class="path">lib.rs</td><td class="loc">13</td><td class="resp">Фасад крейта.</td></tr>
         </tbody>
       </table>
     </div>
@@ -535,10 +536,10 @@
     </div>
 
     <div class="board-grid" style="margin-top:26px;">
-      <div class="board-cell"><span class="board-num">9 045</span><span class="board-cap">строк Rust (7 753 в src, 1 292 в тестах)</span></div>
-      <div class="board-cell"><span class="board-num">17</span><span class="board-cap">файлов .rs, 17 модулей + интеграционный набор</span></div>
-      <div class="board-cell teal"><span class="board-num">133</span><span class="board-cap">теста · 93 unit + 40 integration, без сети</span></div>
-      <div class="board-cell"><span class="board-num">12</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>doctor</code></span></div>
+      <div class="board-cell"><span class="board-num">10 467</span><span class="board-cap">строк Rust (8 774 в src, 1 693 в тестах)</span></div>
+      <div class="board-cell"><span class="board-num">18</span><span class="board-cap">файлов .rs, 18 модулей + интеграционный набор</span></div>
+      <div class="board-cell teal"><span class="board-num">167</span><span class="board-cap">теста · 114 unit + 53 integration, без сети</span></div>
+      <div class="board-cell"><span class="board-num">13</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>trends</code></span></div>
       <div class="board-cell"><span class="board-num">12</span><span class="board-cap">типов предложений (7 Google + 5 Meta), каждый — с undo</span></div>
       <div class="board-cell teal"><span class="board-num">3</span><span class="board-cap">внешних API, все — за мок-диспетчером</span></div>
     </div>
@@ -617,6 +618,26 @@
       <div class="log-entry">
         <span class="log-date">2026-07-21</span>
         <div class="log-body"><span class="log-title"><span class="tick">●</span><code>ads-ai doctor</code></span><span class="log-desc">Одна команда проверяет Claude/Google Ads/Meta Ads/Telegram разом — обходит <code>Agent::new()</code>, чтобы не падать на первой неполной секции конфига.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Тихие часы Telegram</span><span class="log-desc">Уведомления копятся вместо ночной побудки и уходят пакетом, сохраняя интерактивные кнопки; флаш переживает временный сбой отправки — не теряет накопленное.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Пре-фильтр search terms</span><span class="log-desc">Детерминированная секция «кандидаты на расширение семантики» в отчёте — по конверсиям/CTR, не сокращает вход AI-анализа (сломало бы поиск минус-слов).</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Отложенное применение</span><span class="log-desc"><code>approve --at</code> одобряет сейчас, применяет по расписанию тем же approval-путём; <code>reject</code> отменяет до срока.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>История и тренды (SQLite)</span><span class="log-desc">Ежедневный снапшот статистики в <code>data/history.sqlite3</code>, аддитивный слой поверх файлового хранилища; <code>ads-ai trends</code> — «было → стало» за период.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span>Адверсариальное ревью перед пушем</span><span class="log-desc">Многоагентный разбор нашёл гонку двойного apply между новыми конкурентными циклами — закрыта локом вокруг approval-gate; мелкие фиксы по итогам проверки.</span></div>
       </div>
     </div>
   </section>
