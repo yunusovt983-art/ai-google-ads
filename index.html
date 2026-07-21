@@ -500,12 +500,12 @@
         <tbody>
           <tr><td class="path">agent.rs</td><td class="loc">1221</td><td class="resp">Оркестратор: цикл анализа Google + Meta, approval gate, автономный проход, два потолка бюджета (на кампанию и суммарный), алерт о подряд-сбоях, revert, параллельный long-polling Telegram-кнопок.</td></tr>
           <tr><td class="path">ads/mock.rs</td><td class="loc">742</td><td class="resp">Детерминированный seed-аккаунт Google Ads для офлайн-разработки.</td></tr>
+          <tr><td class="path">main.rs</td><td class="loc">669</td><td class="resp">CLI на clap — 12 подкоманд, тонкая обёртка над <code>Agent</code>; <code>ads-ai doctor</code> обходит <code>Agent::new()</code>, проверяет секции конфига независимо.</td></tr>
           <tr><td class="path">ai/mock.rs</td><td class="loc">636</td><td class="resp">Эвристики, заменяющие Claude по идентичному интерфейсу — без сети, обе платформы.</td></tr>
+          <tr><td class="path">ai/mod.rs</td><td class="loc">607</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages, схемы structured output, отдельный анализ и генератор плана для Meta, retry/backoff, <code>health_check()</code> для <code>doctor</code>.</td></tr>
           <tr><td class="path">ads/google.rs</td><td class="loc">592</td><td class="resp">Реальный REST-клиент: OAuth refresh, GAQL-чтение, mutate-запись, retry/backoff на 429/5xx.</td></tr>
-          <tr><td class="path">ai/mod.rs</td><td class="loc">572</td><td class="resp"><code>AiClient</code>-энум + клиент Claude Messages, схемы structured output, отдельный анализ и генератор плана для Meta, retry/backoff.</td></tr>
           <tr><td class="path">proposals.rs</td><td class="loc">548</td><td class="resp">Типы Proposal / UndoAction (12 действий), файловое хранилище, <code>is_autonomy_eligible</code>.</td></tr>
           <tr><td class="path">notify.rs</td><td class="loc">531</td><td class="resp">Telegram: best-effort уведомления + опционально inline-кнопки approve/reject, long-polling getUpdates.</td></tr>
-          <tr><td class="path">main.rs</td><td class="loc">477</td><td class="resp">CLI на clap — 11 подкоманд, тонкая обёртка над <code>Agent</code>.</td></tr>
           <tr><td class="path">ads/mod.rs</td><td class="loc">443</td><td class="resp"><code>AdsClient</code>-энум, общие доменные типы (переиспользуются Meta-слоем), валидация лимитов RSA.</td></tr>
           <tr><td class="path">meta/real.rs</td><td class="loc">436</td><td class="resp">REST-клиент Graph/Marketing API — долгоживущий токен, без OAuth-refresh, retry/backoff, <code>create_campaign()</code> (Campaign → Ad Set → Creative → Ad).</td></tr>
           <tr><td class="path">config.rs</td><td class="loc">390</td><td class="resp">Схема <code>config.toml</code>: <code>AutonomyConfig</code>, <code>TelegramConfig</code>, <code>MetaAdsConfig</code>.</td></tr>
@@ -535,10 +535,10 @@
     </div>
 
     <div class="board-grid" style="margin-top:26px;">
-      <div class="board-cell"><span class="board-num">8 818</span><span class="board-cap">строк Rust (7 526 в src, 1 292 в тестах)</span></div>
+      <div class="board-cell"><span class="board-num">9 045</span><span class="board-cap">строк Rust (7 753 в src, 1 292 в тестах)</span></div>
       <div class="board-cell"><span class="board-num">17</span><span class="board-cap">файлов .rs, 17 модулей + интеграционный набор</span></div>
-      <div class="board-cell teal"><span class="board-num">128</span><span class="board-cap">теста · 88 unit + 40 integration, без сети</span></div>
-      <div class="board-cell"><span class="board-num">11</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>meta</code></span></div>
+      <div class="board-cell teal"><span class="board-num">133</span><span class="board-cap">теста · 93 unit + 40 integration, без сети</span></div>
+      <div class="board-cell"><span class="board-num">12</span><span class="board-cap">подкоманд CLI — от <code>analyze</code> до <code>doctor</code></span></div>
       <div class="board-cell"><span class="board-num">12</span><span class="board-cap">типов предложений (7 Google + 5 Meta), каждый — с undo</span></div>
       <div class="board-cell teal"><span class="board-num">3</span><span class="board-cap">внешних API, все — за мок-диспетчером</span></div>
     </div>
@@ -613,6 +613,10 @@
       <div class="log-entry">
         <span class="log-date">2026-07-21</span>
         <div class="log-body"><span class="log-title"><span class="tick">●</span>Meta Ads: создание кампании с нуля</span><span class="log-desc">Campaign → Ad Set → Creative → Ad четырьмя POST к Marketing API, аудиторный таргетинг вместо ключевых слов, тот же approval gate — <code>ads-ai meta campaign new</code>.</span></div>
+      </div>
+      <div class="log-entry">
+        <span class="log-date">2026-07-21</span>
+        <div class="log-body"><span class="log-title"><span class="tick">●</span><code>ads-ai doctor</code></span><span class="log-desc">Одна команда проверяет Claude/Google Ads/Meta Ads/Telegram разом — обходит <code>Agent::new()</code>, чтобы не падать на первой неполной секции конфига.</span></div>
       </div>
     </div>
   </section>
